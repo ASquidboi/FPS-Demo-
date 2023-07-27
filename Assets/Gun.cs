@@ -14,6 +14,8 @@ public class Gun : MonoBehaviour
     public float impactForce = 30f;
     //Weapon timing
     private float nextTimeToFire = 0f;
+    //Animation stuff
+    public Animator animator;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +32,7 @@ public class Gun : MonoBehaviour
         }
         void Shoot() 
         {
+            animator.SetTrigger("Shoot");
             muzzleFlash.Play();
             RaycastHit hit;
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
