@@ -6,11 +6,11 @@ using UnityEngine;
 public class Shotgun : MonoBehaviour
 {
     //Various gun info
-    public float damage = 40f;
-    public float range = 100f;
+    public float damage = 20f;
+    public float range = 1f;
     public float fireRate = 5f;
     //Camera for raycasting
-    public Camera fpsCam;
+    public Transform fpsCam;
     //Impact effects & muzzle flash
     public ParticleSystem muzzleFlash;
     public GameObject impactEffect;
@@ -46,8 +46,9 @@ public class Shotgun : MonoBehaviour
     {
         Vector3 direction = fpsCam.transform.forward; // your initial aim.
         Vector3 spread = Vector3.zero;
-        spread+= fpsCam.transform.up * Random.Range(-10f, 10f); // add random up or down (because random can get negative too)
-        spread+= fpsCam.transform.right * Random.Range(-10f, 10f); // add random left or right
+        spread += fpsCam.transform.up * Random.Range(-10f, 10f); // add random up or down (because random can get negative too)
+        spread += fpsCam.transform.right * Random.Range(-10f, 10f); // add random left or right
+        Debug.Log(spread);
         //Debug.Log("Hello there");
 
         // Using random up and right values will lead to a square spray pattern. If we normalize this vector, we'll get the spread direction, but as a circle.
@@ -71,7 +72,9 @@ public class Shotgun : MonoBehaviour
                 GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(impactGO, 1f);
                 ammo -= 1f;
-                if (Physics.Raycast(fpsCam.transform.position, direction, out hit, range))
+                
+            }
+            if (Physics.Raycast(fpsCam.transform.position, direction, out hit, range))
                 {
                     Debug.DrawLine(fpsCam.transform.position, hit.point, Color.green, 1f);
                 }
@@ -79,7 +82,6 @@ public class Shotgun : MonoBehaviour
                 {
                     Debug.DrawLine(fpsCam.transform.position, fpsCam.transform.position + direction * range, Color.red, 1f);
                 }
-            }
             firingSound.Play();
             
     }
